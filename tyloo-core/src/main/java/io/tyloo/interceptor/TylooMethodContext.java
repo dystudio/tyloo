@@ -2,7 +2,7 @@ package io.tyloo.interceptor;
 
 import io.tyloo.api.Tyloo;
 import io.tyloo.api.Propagation;
-import io.tyloo.api.TransactionContext;
+import io.tyloo.api.TylooTransactionContext;
 import io.tyloo.api.UniqueIdentity;
 import io.tyloo.common.MethodRole;
 import io.tyloo.support.FactoryBuilder;
@@ -44,7 +44,7 @@ public class TylooMethodContext {
     /**
      * 事务上下文
      */
-    private TransactionContext transactionContext = null;
+    private TylooTransactionContext tylooTransactionContext = null;
 
     TylooMethodContext(ProceedingJoinPoint pjp) {
         this.pjp = pjp;
@@ -52,7 +52,7 @@ public class TylooMethodContext {
         assert method != null;
         this.tyloo = method.getAnnotation(Tyloo.class);
         this.propagation = tyloo.propagation();
-        this.transactionContext = FactoryBuilder.factoryOf(tyloo.transactionContextEditor()).getInstance().get(pjp.getTarget(), method, pjp.getArgs());
+        this.tylooTransactionContext = FactoryBuilder.factoryOf(tyloo.transactionContextEditor()).getInstance().get(pjp.getTarget(), method, pjp.getArgs());
 
     }
 
@@ -64,8 +64,8 @@ public class TylooMethodContext {
         return propagation;
     }
 
-    public TransactionContext getTransactionContext() {
-        return transactionContext;
+    public TylooTransactionContext getTylooTransactionContext() {
+        return tylooTransactionContext;
     }
 
     public Method getMethod() {
@@ -119,10 +119,10 @@ public class TylooMethodContext {
      * @return
      */
     public MethodRole getMethodRole(boolean isTransactionActive) {
-        if ((propagation.equals(Propagation.REQUIRED) && !isTransactionActive && transactionContext == null) ||
+        if ((propagation.equals(Propagation.REQUIRED) && !isTransactionActive && tylooTransactionContext == null) ||
                 propagation.equals(Propagation.REQUIRES_NEW)) {
             return MethodRole.ROOT;
-        } else if ((propagation.equals(Propagation.REQUIRED) || propagation.equals(Propagation.MANDATORY)) && !isTransactionActive && transactionContext != null) {
+        } else if ((propagation.equals(Propagation.REQUIRED) || propagation.equals(Propagation.MANDATORY)) && !isTransactionActive && tylooTransactionContext != null) {
             return MethodRole.PROVIDER;
         } else {
             return MethodRole.NORMAL;

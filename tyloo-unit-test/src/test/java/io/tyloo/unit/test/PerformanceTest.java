@@ -1,6 +1,6 @@
 package io.tyloo.unit.test;
 
-import io.tyloo.Participant;
+import io.tyloo.Subordinate;
 import io.tyloo.Transaction;
 import io.tyloo.common.TransactionType;
 import io.tyloo.serializer.KryoPoolSerializer;
@@ -43,7 +43,7 @@ public class PerformanceTest extends AbstractTestCase {
         for (int i = 0; i < 10000; i++) {
 //
             Transaction transaction = new Transaction(TransactionType.ROOT);
-            transaction.getAttachments().put("abc", new Participant());
+            transaction.getAttachments().put("abc", new Subordinate());
             byte[] bytes = objectSerializer.serialize(transaction);
             Transaction transaction1 = (Transaction) objectSerializer.deserialize(bytes);
 

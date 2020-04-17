@@ -1,13 +1,13 @@
 package io.tyloo.interceptor;
 
 import io.tyloo.InvocationContext;
-import io.tyloo.Participant;
+import io.tyloo.Subordinate;
 import io.tyloo.Transaction;
 import io.tyloo.TransactionManager;
 import io.tyloo.api.Tyloo;
-import io.tyloo.api.TransactionContext;
-import io.tyloo.api.TransactionStatus;
-import io.tyloo.api.TransactionXid;
+import io.tyloo.api.TylooTransactionContext;
+import io.tyloo.api.TylooTransactionStatus;
+import io.tyloo.api.TylooTransactionXid;
 import io.tyloo.support.FactoryBuilder;
 import io.tyloo.utils.ReflectionUtils;
 import io.tyloo.utils.TylooMethodUtils;
@@ -42,7 +42,7 @@ public class TylooCoordinatorInterceptor {
 
             switch (transaction.getStatus()) {
                 case TRYING:
-                    enlistParticipant(pjp);
+                    addSubordinate(pjp);
                     break;
                 case CONFIRMING:
                     break;
@@ -63,7 +63,7 @@ public class TylooCoordinatorInterceptor {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    private void enlistParticipant(ProceedingJoinPoint pjp) throws IllegalAccessException, InstantiationException {
+    private void addSubordinate(ProceedingJoinPoint pjp) throws IllegalAccessException, InstantiationException, CloneNotSupportedException {
 
         Method method = TylooMethodUtils.getTylooMethod(pjp);
         if (method == null) {
@@ -75,10 +75,10 @@ public class TylooCoordinatorInterceptor {
         String cancelMethodName = tyloo.cancelMethod();
 
         Transaction transaction = transactionManager.getCurrentTransaction();
-        TransactionXid xid = new TransactionXid(transaction.getXid().getGlobalTransactionId());
+        TylooTransactionXid xid = new TylooTransactionXid(transaction.getXid().getGlobalTransactionId());
 
         if (FactoryBuilder.factoryOf(tyloo.transactionContextEditor()).getInstance().get(pjp.getTarget(), method, pjp.getArgs()) == null) {
-            FactoryBuilder.factoryOf(tyloo.transactionContextEditor()).getInstance().set(new TransactionContext(xid, TransactionStatus.TRYING.getId()), pjp.getTarget(), ((MethodSignature) pjp.getSignature()).getMethod(), pjp.getArgs());
+            FactoryBuilder.factoryOf(tyloo.transactionContextEditor()).getInstance().set(new TylooTransactionContext(xid, TylooTransactionStatus.TRYING.getId()), pjp.getTarget(), ((MethodSignature) pjp.getSignature()).getMethod(), pjp.getArgs());
         }
 
         Class targetClass = ReflectionUtils.getDeclaringType(pjp.getTarget().getClass(), method.getName(), method.getParameterTypes());
@@ -91,14 +91,14 @@ public class TylooCoordinatorInterceptor {
                 cancelMethodName,
                 method.getParameterTypes(), pjp.getArgs());
 
-        Participant participant =
-                new Participant(
+        Subordinate Subordinate =
+                new Subordinate(
                         xid,
                         confirmInvocation,
                         cancelInvocation,
                         tyloo.transactionContextEditor());
 
-        transactionManager.enlistParticipant(participant);
+        transactionManager.addSubordinate(Subordinate);
 
     }
 

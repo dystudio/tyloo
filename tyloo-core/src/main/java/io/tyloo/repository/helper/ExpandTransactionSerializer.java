@@ -3,7 +3,7 @@ package io.tyloo.repository.helper;
 import com.alibaba.fastjson.JSON;
 import io.tyloo.SystemException;
 import io.tyloo.Transaction;
-import io.tyloo.api.TransactionStatus;
+import io.tyloo.api.TylooTransactionStatus;
 import io.tyloo.serializer.ObjectSerializer;
 import io.tyloo.utils.ByteUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -51,7 +51,7 @@ public class ExpandTransactionSerializer {
 
         byte[] content = propertyMap.get("CONTENT");
         Transaction transaction = (Transaction) serializer.deserialize(content);
-        transaction.changeStatus(TransactionStatus.valueOf(ByteUtils.bytesToInt(propertyMap.get("STATUS"))));
+        transaction.changeStatus(TylooTransactionStatus.valueOf(ByteUtils.bytesToInt(propertyMap.get("STATUS"))));
         transaction.resetRetriedCount(ByteUtils.bytesToInt(propertyMap.get("RETRIED_COUNT")));
 
         try {

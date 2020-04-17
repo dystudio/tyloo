@@ -1,9 +1,9 @@
 package io.tyloo;
 
 
-import io.tyloo.api.TransactionContext;
-import io.tyloo.api.TransactionStatus;
-import io.tyloo.api.TransactionXid;
+import io.tyloo.api.TylooTransactionContext;
+import io.tyloo.api.TylooTransactionStatus;
+import io.tyloo.api.TylooTransactionXid;
 import io.tyloo.common.TransactionType;
 
 import javax.transaction.xa.Xid;
@@ -25,9 +25,9 @@ public class Transaction implements Serializable {
 
     private static final long serialVersionUID = 7291423944314337931L;
 
-    private TransactionXid xid;
+    private TylooTransactionXid xid;
 
-    private TransactionStatus status;
+    private TylooTransactionStatus status;
 
     private TransactionType transactionType;
 
@@ -39,35 +39,35 @@ public class Transaction implements Serializable {
 
     private long version = 1;
 
-    private List<Participant> participants = new ArrayList<Participant>();
+    private List<Subordinate> Subordinates = new ArrayList<>();
 
-    private Map<String, Object> attachments = new ConcurrentHashMap<String, Object>();
+    private Map<String, Object> attachments = new ConcurrentHashMap<>();
 
     public Transaction() {
 
     }
 
-    public Transaction(TransactionContext transactionContext) throws CloneNotSupportedException {
-        this.xid = transactionContext.getXid();
-        this.status = TransactionStatus.TRYING;
+    public Transaction(TylooTransactionContext tylooTransactionContext) throws CloneNotSupportedException {
+        this.xid = tylooTransactionContext.getXid();
+        this.status = TylooTransactionStatus.TRYING;
         this.transactionType = TransactionType.BRANCH;
     }
 
     public Transaction(TransactionType transactionType) {
-        this.xid = new TransactionXid();
-        this.status = TransactionStatus.TRYING;
+        this.xid = new TylooTransactionXid();
+        this.status = TylooTransactionStatus.TRYING;
         this.transactionType = transactionType;
     }
 
     public Transaction(Object uniqueIdentity,TransactionType transactionType) {
 
-        this.xid = new TransactionXid(uniqueIdentity);
-        this.status = TransactionStatus.TRYING;
+        this.xid = new TylooTransactionXid(uniqueIdentity);
+        this.status = TylooTransactionStatus.TRYING;
         this.transactionType = transactionType;
     }
 
-    public void enlistParticipant(Participant participant) {
-        participants.add(participant);
+    public void addSubordinate(Subordinate Subordinate) {
+        Subordinates.add(Subordinate);
     }
 
 
@@ -75,34 +75,34 @@ public class Transaction implements Serializable {
         return xid.clone();
     }
 
-    public TransactionStatus getStatus() {
+    public TylooTransactionStatus getStatus() {
         return status;
     }
 
 
-    public List<Participant> getParticipants() {
-        return participants;
+    public List<Subordinate> getSubordinates() {
+        return Subordinates;
     }
 
     public TransactionType getTransactionType() {
         return transactionType;
     }
 
-    public void changeStatus(TransactionStatus status) {
+    public void changeStatus(TylooTransactionStatus status) {
         this.status = status;
     }
 
 
     public void commit() {
 
-        for (Participant participant : participants) {
-            participant.commit();
+        for (Subordinate Subordinate : Subordinates) {
+            Subordinate.commit();
         }
     }
 
     public void rollback() {
-        for (Participant participant : participants) {
-            participant.rollback();
+        for (Subordinate Subordinate : Subordinates) {
+            Subordinate.rollback();
         }
     }
 

@@ -15,9 +15,7 @@
         <module>tyloo-spring</module>
         <module>tyloo-unit-test</module>
         <module>tyloo-tutorial-sample</module>
-        <module>tyloo-server</module>
         <module>tyloo-dubbo</module>
-        <module>tyloo-bom</module>
     </modules>
 
     <properties>

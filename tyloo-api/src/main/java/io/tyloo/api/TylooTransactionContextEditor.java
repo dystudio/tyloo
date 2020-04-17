@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  *
  */
 
-public interface TransactionContextEditor {
+public interface TylooTransactionContextEditor {
     /**
      * 从参数中获得事务上下文
      *
@@ -21,15 +21,15 @@ public interface TransactionContextEditor {
      * @return 事务上下文
      */
 
-    TransactionContext get(Object target, Method method, Object[] args);
+    TylooTransactionContext get(Object target, Method method, Object[] args);
     /**
      * 设置事务上下文到参数中
      *
-     * @param transactionContext 事务上下文
+     * @param tylooTransactionContext 事务上下文
      * @param target             对象
      * @param method             方法
      * @param args               参数
      */
-    void set(TransactionContext transactionContext, Object target, Method method, Object[] args);
+    void set(TylooTransactionContext tylooTransactionContext, Object target, Method method, Object[] args);
 
 }

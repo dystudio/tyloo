@@ -87,7 +87,7 @@ public class RedisTransactionRepository extends CachableTransactionRepository {
             Long statusCode = RedisHelper.execute(jedisPool, new JedisCallback<Long>() {
 
                 @Override
-                public Long doInJedis(Jedis jedis) {
+                public Long doInJedis(Jedis jedis) throws CloneNotSupportedException {
 
 
                     List<byte[]> params = new ArrayList<byte[]>();
@@ -117,7 +117,7 @@ public class RedisTransactionRepository extends CachableTransactionRepository {
 
             Long statusCode = RedisHelper.execute(jedisPool, new JedisCallback<Long>() {
                 @Override
-                public Long doInJedis(Jedis jedis) {
+                public Long doInJedis(Jedis jedis) throws CloneNotSupportedException {
 
                     transaction.updateTime();
                     transaction.updateVersion();
@@ -149,7 +149,7 @@ public class RedisTransactionRepository extends CachableTransactionRepository {
 
             Long result = RedisHelper.execute(jedisPool, new JedisCallback<Long>() {
                 @Override
-                public Long doInJedis(Jedis jedis) {
+                public Long doInJedis(Jedis jedis) throws CloneNotSupportedException {
 
                     return jedis.del(RedisHelper.getRedisKey(keyPrefix, transaction.getXid()));
                 }

@@ -2,7 +2,7 @@ package io.tyloo.dubbo.proxy.jdk;
 
 import io.tyloo.api.Tyloo;
 import io.tyloo.api.Propagation;
-import io.tyloo.dubbo.context.DubboTransactionContextEditor;
+import io.tyloo.dubbo.context.DubboTylooTransactionContextEditor;
 import io.tyloo.interceptor.TylooCoordinatorAspect;
 import io.tyloo.support.FactoryBuilder;
 import io.tyloo.utils.ReflectionUtils;
@@ -46,7 +46,7 @@ public class TccInvokerInvocationHandler extends InvokerInvocationHandler {
             if (StringUtils.isEmpty(tyloo.confirmMethod())) {
                 ReflectionUtils.changeAnnotationValue(tyloo, "confirmMethod", method.getName());
                 ReflectionUtils.changeAnnotationValue(tyloo, "cancelMethod", method.getName());
-                ReflectionUtils.changeAnnotationValue(tyloo, "transactionContextEditor", DubboTransactionContextEditor.class);
+                ReflectionUtils.changeAnnotationValue(tyloo, "transactionContextEditor", DubboTylooTransactionContextEditor.class);
                 ReflectionUtils.changeAnnotationValue(tyloo, "propagation", Propagation.SUPPORTS);
             }
 

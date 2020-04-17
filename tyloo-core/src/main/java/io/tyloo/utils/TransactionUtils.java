@@ -14,7 +14,7 @@ public class TransactionUtils {
     public static boolean isLegalTransactionContext(boolean isTransactionActive, TylooMethodContext tylooMethodContext) {
 
 
-        if (tylooMethodContext.getPropagation().equals(Propagation.MANDATORY) && !isTransactionActive && tylooMethodContext.getTransactionContext() == null) {
+        if (tylooMethodContext.getPropagation().equals(Propagation.MANDATORY) && !isTransactionActive && tylooMethodContext.getTylooTransactionContext() == null) {
             return false;
         }
 

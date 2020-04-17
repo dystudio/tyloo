@@ -8,8 +8,8 @@ import io.tyloo.sample.redpacket.domain.repository.RedPacketAccountRepository;
 import io.tyloo.sample.redpacket.domain.repository.TradeOrderRepository;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import io.tyloo.api.Tyloo;
-import io.tyloo.api.TransactionContext;
-import io.tyloo.context.MethodTransactionContextEditor;
+import io.tyloo.api.TylooTransactionContext;
+import io.tyloo.context.MethodTylooTransactionContextEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +26,9 @@ public class RedPacketTradeOrderServiceImpl implements RedPacketTradeOrderServic
     TradeOrderRepository tradeOrderRepository;
 
     @Override
-    @Tyloo(confirmMethod = "confirmRecord", cancelMethod = "cancelRecord", transactionContextEditor = MethodTransactionContextEditor.class)
+    @Tyloo(confirmMethod = "confirmRecord", cancelMethod = "cancelRecord", transactionContextEditor = MethodTylooTransactionContextEditor.class)
     @Transactional
-    public String record(TransactionContext transactionContext, RedPacketTradeOrderDto tradeOrderDto) {
+    public String record(TylooTransactionContext tylooTransactionContext, RedPacketTradeOrderDto tradeOrderDto) {
 
         try {
             Thread.sleep(1000l);
@@ -68,7 +68,7 @@ public class RedPacketTradeOrderServiceImpl implements RedPacketTradeOrderServic
     }
 
     @Transactional
-    public void confirmRecord(TransactionContext transactionContext, RedPacketTradeOrderDto tradeOrderDto) {
+    public void confirmRecord(TylooTransactionContext tylooTransactionContext, RedPacketTradeOrderDto tradeOrderDto) {
 
         try {
             Thread.sleep(1000l);
@@ -93,7 +93,7 @@ public class RedPacketTradeOrderServiceImpl implements RedPacketTradeOrderServic
     }
 
     @Transactional
-    public void cancelRecord(TransactionContext transactionContext, RedPacketTradeOrderDto tradeOrderDto) {
+    public void cancelRecord(TylooTransactionContext tylooTransactionContext, RedPacketTradeOrderDto tradeOrderDto) {
 
         try {
             Thread.sleep(1000l);

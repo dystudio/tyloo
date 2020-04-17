@@ -2,7 +2,7 @@ package io.tyloo.repository;
 
 
 import io.tyloo.Transaction;
-import io.tyloo.api.TransactionStatus;
+import io.tyloo.api.TylooTransactionStatus;
 import io.tyloo.serializer.KryoPoolSerializer;
 import io.tyloo.serializer.ObjectSerializer;
 import io.tyloo.utils.CollectionUtils;
@@ -181,7 +181,7 @@ public class JdbcTransactionRepository extends CachableTransactionRepository {
 
             return stmt.executeUpdate();
 
-        } catch (SQLException e) {
+        } catch (SQLException | CloneNotSupportedException e) {
             throw new TransactionIOException(e);
         } finally {
             closeStatement(stmt);
@@ -299,7 +299,7 @@ public class JdbcTransactionRepository extends CachableTransactionRepository {
         while (resultSet.next()) {
             byte[] transactionBytes = resultSet.getBytes(3);
             Transaction transaction = serializer.deserialize(transactionBytes);
-            transaction.changeStatus(TransactionStatus.valueOf(resultSet.getInt(4)));
+            transaction.changeStatus(TylooTransactionStatus.valueOf(resultSet.getInt(4)));
             transaction.setLastUpdateTime(resultSet.getDate(7));
             transaction.setVersion(resultSet.getLong(9));
             transaction.resetRetriedCount(resultSet.getInt(8));

@@ -12,30 +12,30 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date: 12:01 2019/4/6
  *
  */
-public class TransactionContext implements Serializable {
+public class TylooTransactionContext implements Serializable {
 
     private static final long serialVersionUID = -8199390103169700387L;
 
-    private TransactionXid xid;
+    private TylooTransactionXid xid;
 
     private int status;
 
-    private Map<String, String> attachments = new ConcurrentHashMap<String, String>();
+    private final Map<String, String> attachments = new ConcurrentHashMap<String, String>();
 
-    public TransactionContext() {
+    public TylooTransactionContext() {
 
     }
 
-    public TransactionContext(TransactionXid xid, int status) {
+    public TylooTransactionContext(TylooTransactionXid xid, int status) {
         this.xid = xid;
         this.status = status;
     }
 
-    public void setXid(TransactionXid xid) {
+    public void setXid(TylooTransactionXid xid) {
         this.xid = xid;
     }
 
-    public TransactionXid getXid() throws CloneNotSupportedException {
+    public TylooTransactionXid getXid() throws CloneNotSupportedException {
         return xid.clone();
     }
 

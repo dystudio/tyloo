@@ -1,15 +1,15 @@
 package io.tyloo.unittest.service;
 
-import io.tyloo.api.TransactionContext;
+import io.tyloo.api.TylooTransactionContext;
 
 
 public interface AccountService {
 
-    void transferTo(TransactionContext transactionContext, long accountId, int amount);
+    void transferTo(TylooTransactionContext tylooTransactionContext, long accountId, int amount);
 
-    void transferToConfirm(TransactionContext transactionContext, long accountId, int amount);
+    void transferToConfirm(TylooTransactionContext tylooTransactionContext, long accountId, int amount);
 
-    void transferToCancel(TransactionContext transactionContext, long accountId, int amount);
+    void transferToCancel(TylooTransactionContext tylooTransactionContext, long accountId, int amount);
 
     void transferToWithNoTransactionContext(long accountId, int amount);
 
@@ -17,13 +17,13 @@ public interface AccountService {
 
     void transferToCancelWithNoTransactionContext(long accountId, int amount);
 
-    void transferFrom(TransactionContext transactionContext, long accountId, int amount);
+    void transferFrom(TylooTransactionContext tylooTransactionContext, long accountId, int amount);
 
-    void transferFromConfirm(TransactionContext transactionContext, long accountId, int amount);
+    void transferFromConfirm(TylooTransactionContext tylooTransactionContext, long accountId, int amount);
 
-    void transferFromCancel(TransactionContext transactionContext, long accountId, int amount);
+    void transferFromCancel(TylooTransactionContext tylooTransactionContext, long accountId, int amount);
 
-    void transferToWithMultipleTier(TransactionContext transactionContext, long accountId, int amount);
+    void transferToWithMultipleTier(TylooTransactionContext tylooTransactionContext, long accountId, int amount);
 
-    void transferFromWithMultipleTier(TransactionContext transactionContext, long accountId, int amount);
+    void transferFromWithMultipleTier(TylooTransactionContext tylooTransactionContext, long accountId, int amount);
 }

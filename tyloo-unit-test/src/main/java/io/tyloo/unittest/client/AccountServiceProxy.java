@@ -1,6 +1,6 @@
 package io.tyloo.unittest.client;
 
-import io.tyloo.api.TransactionContext;
+import io.tyloo.api.TylooTransactionContext;
 import io.tyloo.unittest.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ public class AccountServiceProxy {
 
     private ExecutorService executorService = Executors.newFixedThreadPool(100);
 
-    public void transferFromWithMultipleTier(final TransactionContext transactionContext, final long accountId, final int amount) {
+    public void transferFromWithMultipleTier(final TylooTransactionContext tylooTransactionContext, final long accountId, final int amount) {
         Future<Boolean> future = this.executorService
                 .submit(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
-                        accountService.transferFromWithMultipleTier(transactionContext, accountId, amount);
+                        accountService.transferFromWithMultipleTier(tylooTransactionContext, accountId, amount);
                         return true;
                     }
                 });
@@ -29,7 +29,7 @@ public class AccountServiceProxy {
         handleResult(future);
     }
 
-    public void transferToWithMultipleTier(final TransactionContext transactionContext, final long accountId, final int amount) {
+    public void transferToWithMultipleTier(final TylooTransactionContext tylooTransactionContext, final long accountId, final int amount) {
 //        Future<Boolean> future = this.executorService
 //                .submit(new Callable<Boolean>() {
 //                    @Override
@@ -40,13 +40,13 @@ public class AccountServiceProxy {
 //                });
 //
 //        handleResult(future);
-        accountService.transferToWithMultipleTier(transactionContext, accountId, amount);
+        accountService.transferToWithMultipleTier(tylooTransactionContext, accountId, amount);
     }
 
-    public void performanceTuningTransferTo(TransactionContext transactionContext) {
+    public void performanceTuningTransferTo(TylooTransactionContext tylooTransactionContext) {
     }
 
-    public void transferTo(final TransactionContext transactionContext, final long accountId, final int amount) {
+    public void transferTo(final TylooTransactionContext tylooTransactionContext, final long accountId, final int amount) {
 
 //        Future<Boolean> future = this.executorService
 //                .submit(new Callable<Boolean>() {
@@ -58,7 +58,7 @@ public class AccountServiceProxy {
 //                });
 //
 //        handleResult(future);
-        accountService.transferTo(transactionContext, accountId, amount);
+        accountService.transferTo(tylooTransactionContext, accountId, amount);
     }
 
     public void transferTo(final long accountId, final int amount) {
@@ -77,7 +77,7 @@ public class AccountServiceProxy {
         accountService.transferToWithNoTransactionContext(accountId, amount);
     }
 
-    public void transferFrom(final TransactionContext transactionContext, final long accountId, final int amount) {
+    public void transferFrom(final TylooTransactionContext tylooTransactionContext, final long accountId, final int amount) {
 
 //        Future<Boolean> future = this.executorService
 //                .submit(new Callable<Boolean>() {
@@ -90,7 +90,7 @@ public class AccountServiceProxy {
 //
 //        handleResult(future);
 
-        accountService.transferFrom(transactionContext, accountId, amount);
+        accountService.transferFrom(tylooTransactionContext, accountId, amount);
     }
 
 

@@ -1,10 +1,10 @@
 package io.tyloo.sample.http.redpacket.api;
 
 import io.tyloo.sample.http.redpacket.api.dto.RedPacketTradeOrderDto;
-import io.tyloo.api.TransactionContext;
+import io.tyloo.api.TylooTransactionContext;
 
 
 public interface RedPacketTradeOrderService {
 
-    public String record(TransactionContext transactionContext, RedPacketTradeOrderDto tradeOrderDto);
+    public String record(TylooTransactionContext tylooTransactionContext, RedPacketTradeOrderDto tradeOrderDto);
 }

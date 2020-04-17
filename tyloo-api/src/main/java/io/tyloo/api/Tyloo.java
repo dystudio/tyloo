@@ -37,7 +37,7 @@ public @interface Tyloo {
     /**
      * 事务上下文编辑
      */
-    public Class<? extends TransactionContextEditor> transactionContextEditor() default DefaultTransactionContextEditor.class;
+    public Class<? extends TylooTransactionContextEditor> transactionContextEditor() default DefaultTylooTransactionContextEditor.class;
 
     /**
      * 超时异常
@@ -55,25 +55,25 @@ public @interface Tyloo {
     /**
      * 默认事务上下文编辑器实现
      */
-    class DefaultTransactionContextEditor implements TransactionContextEditor {
+    class DefaultTylooTransactionContextEditor implements TylooTransactionContextEditor {
 
         @Override
-        public TransactionContext get(Object target, Method method, Object[] args) {
+        public TylooTransactionContext get(Object target, Method method, Object[] args) {
             int position = getTransactionContextParamPosition(method.getParameterTypes());
 
             if (position >= 0) {
-                return (TransactionContext) args[position];
+                return (TylooTransactionContext) args[position];
             }
 
             return null;
         }
 
         @Override
-        public void set(TransactionContext transactionContext, Object target, Method method, Object[] args) {
+        public void set(TylooTransactionContext tylooTransactionContext, Object target, Method method, Object[] args) {
 
             int position = getTransactionContextParamPosition(method.getParameterTypes());
             if (position >= 0) {
-                args[position] = transactionContext;
+                args[position] = tylooTransactionContext;
             }
         }
 
@@ -88,7 +88,7 @@ public @interface Tyloo {
             int position = -1;
 
             for (int i = 0; i < parameterTypes.length; i++) {
-                if (parameterTypes[i].equals(TransactionContext.class)) {
+                if (parameterTypes[i].equals(TylooTransactionContext.class)) {
                     position = i;
                     break;
                 }
@@ -100,18 +100,18 @@ public @interface Tyloo {
          * @param args 参数列表
          * @return 获取TransactionContext对象
          */
-        public static TransactionContext getTransactionContextFromArgs(Object[] args) {
+        public static TylooTransactionContext getTransactionContextFromArgs(Object[] args) {
 
-            TransactionContext transactionContext = null;
+            TylooTransactionContext tylooTransactionContext = null;
 
             for (Object arg : args) {
-                if (arg != null && TransactionContext.class.isAssignableFrom(arg.getClass())) {
+                if (arg != null && TylooTransactionContext.class.isAssignableFrom(arg.getClass())) {
 
-                    transactionContext = (TransactionContext) arg;
+                    tylooTransactionContext = (TylooTransactionContext) arg;
                 }
             }
 
-            return transactionContext;
+            return tylooTransactionContext;
         }
     }
 }

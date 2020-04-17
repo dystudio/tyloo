@@ -1,6 +1,6 @@
 package io.tyloo;
 
-import io.tyloo.api.TransactionXid;
+import io.tyloo.api.TylooTransactionXid;
 
 import java.util.Date;
 import java.util.List;
@@ -19,13 +19,13 @@ import java.util.List;
 
 public interface TransactionRepository {
 
-    int create(Transaction transaction);
+    int create(Transaction transaction) throws CloneNotSupportedException;
 
-    int update(Transaction transaction);
+    int update(Transaction transaction) throws CloneNotSupportedException;
 
-    int delete(Transaction transaction);
+    int delete(Transaction transaction) throws CloneNotSupportedException;
 
-    Transaction findByXid(TransactionXid xid);
+    Transaction findByXid(TylooTransactionXid xid) throws CloneNotSupportedException;
 
-    List<Transaction> findAllUnmodifiedSince(Date date);
+    List<Transaction> findAllUnmodifiedSince(Date date) throws CloneNotSupportedException;
 }

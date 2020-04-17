@@ -8,7 +8,7 @@ package io.tyloo.api;
  * @Date: 12:05 2019/4/5
  *
  */
-public enum TransactionStatus {
+public enum TylooTransactionStatus {
 
     /**
      * try½×¶Î
@@ -27,7 +27,7 @@ public enum TransactionStatus {
 
     private int id;
 
-     TransactionStatus(int id) {
+     TylooTransactionStatus(int id) {
         this.id = id;
     }
 
@@ -35,7 +35,7 @@ public enum TransactionStatus {
         return id;
     }
 
-    public static TransactionStatus valueOf(int id) {
+    public static TylooTransactionStatus valueOf(int id) {
 
         switch (id) {
             case 1:

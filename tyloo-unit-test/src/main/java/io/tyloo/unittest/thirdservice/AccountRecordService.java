@@ -1,12 +1,12 @@
 package io.tyloo.unittest.thirdservice;
 
-import io.tyloo.api.TransactionContext;
+import io.tyloo.api.TylooTransactionContext;
 
 
 public interface AccountRecordService {
-    public void record(TransactionContext transactionContext, long accountId, int amount);
+    public void record(TylooTransactionContext tylooTransactionContext, long accountId, int amount);
 
-    void recordConfirm(TransactionContext transactionContext, long accountId, int amount);
+    void recordConfirm(TylooTransactionContext tylooTransactionContext, long accountId, int amount);
 
-    void recordCancel(TransactionContext transactionContext, long accountId, int amount);
+    void recordCancel(TylooTransactionContext tylooTransactionContext, long accountId, int amount);
 }

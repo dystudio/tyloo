@@ -8,7 +8,7 @@ import io.tyloo.sample.dubbo.capital.api.CapitalTradeOrderService;
 import io.tyloo.sample.dubbo.capital.api.dto.CapitalTradeOrderDto;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import io.tyloo.api.Tyloo;
-import io.tyloo.dubbo.context.DubboTransactionContextEditor;
+import io.tyloo.dubbo.context.DubboTylooTransactionContextEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class CapitalTradeOrderServiceImpl implements CapitalTradeOrderService {
     TradeOrderRepository tradeOrderRepository;
 
     @Override
-    @Tyloo(confirmMethod = "confirmRecord", cancelMethod = "cancelRecord", transactionContextEditor = DubboTransactionContextEditor.class)
+    @Tyloo(confirmMethod = "confirmRecord", cancelMethod = "cancelRecord", transactionContextEditor = DubboTylooTransactionContextEditor.class)
     @Transactional
     public String record(CapitalTradeOrderDto tradeOrderDto) {
 
@@ -97,7 +97,7 @@ public class CapitalTradeOrderServiceImpl implements CapitalTradeOrderService {
     @Transactional
     public void cancelRecord(CapitalTradeOrderDto tradeOrderDto) {
         try {
-            Thread.sleep(1000l);
+            Thread.sleep(1000L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

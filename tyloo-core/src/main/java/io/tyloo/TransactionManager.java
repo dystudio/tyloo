@@ -1,7 +1,7 @@
 package io.tyloo;
 
-import io.tyloo.api.TransactionContext;
-import io.tyloo.api.TransactionStatus;
+import io.tyloo.api.TylooTransactionContext;
+import io.tyloo.api.TylooTransactionStatus;
 import io.tyloo.common.TransactionType;
 import org.apache.log4j.Logger;
 
@@ -53,7 +53,7 @@ public class TransactionManager {
      * @param uniqueIdentify
      * @return
      */
-    public Transaction begin(Object uniqueIdentify) {
+    public Transaction begin(Object uniqueIdentify) throws CloneNotSupportedException {
         Transaction transaction = new Transaction(uniqueIdentify, TransactionType.ROOT);
         transactionRepository.create(transaction);
         registerTransaction(transaction);
@@ -64,12 +64,12 @@ public class TransactionManager {
     /**
      * 传播发起分支事务
      *
-     * @param transactionContext 事务上下文
+     * @param tylooTransactionContext 事务上下文
      * @return 分支事务
      */
-    public Transaction propagationNewBegin(TransactionContext transactionContext) {
+    public Transaction propagationNewBegin(TylooTransactionContext tylooTransactionContext) throws CloneNotSupportedException {
 
-        Transaction transaction = new Transaction(transactionContext);
+        Transaction transaction = new Transaction(tylooTransactionContext);
         transactionRepository.create(transaction);
 
         registerTransaction(transaction);
@@ -79,20 +79,20 @@ public class TransactionManager {
     /**
      * 传播获取分支事务
      *
-     * @param transactionContext 事务上下文
+     * @param tylooTransactionContext 事务上下文
      * @return 分支事务
      * @throws NoExistedTransactionException 当事务不存在时
      */
-    public Transaction propagationExistBegin(TransactionContext transactionContext) throws NoExistedTransactionException {
+    public Transaction propagationExistBegin(TylooTransactionContext tylooTransactionContext) throws NoExistedTransactionException {
         Transaction transaction = null;
         try {
-            transaction = transactionRepository.findByXid(transactionContext.getXid());
+            transaction = transactionRepository.findByXid(tylooTransactionContext.getXid());
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
 
         if (transaction != null) {
-            transaction.changeStatus(TransactionStatus.valueOf(transactionContext.getStatus()));
+            transaction.changeStatus(TylooTransactionStatus.valueOf(tylooTransactionContext.getStatus()));
             registerTransaction(transaction);
             return transaction;
         } else {
@@ -100,11 +100,11 @@ public class TransactionManager {
         }
     }
 
-    public void commit(boolean asyncCommit) {
+    public void commit(boolean asyncCommit) throws CloneNotSupportedException {
 
         final Transaction transaction = getCurrentTransaction();
 
-        transaction.changeStatus(TransactionStatus.CONFIRMING);
+        transaction.changeStatus(TylooTransactionStatus.CONFIRMING);
 
         transactionRepository.update(transaction);
 
@@ -129,10 +129,10 @@ public class TransactionManager {
     }
 
 
-    public void rollback(boolean asyncRollback) {
+    public void rollback(boolean asyncRollback) throws CloneNotSupportedException {
 
         final Transaction transaction = getCurrentTransaction();
-        transaction.changeStatus(TransactionStatus.CANCELLING);
+        transaction.changeStatus(TylooTransactionStatus.CANCELLING);
 
         transactionRepository.update(transaction);
 
@@ -229,11 +229,11 @@ public class TransactionManager {
     /**
      * 添加参与者到事务
      *
-     * @param participant 参与者
+     * @param Subordinate 参与者
      */
-    public void enlistParticipant(Participant participant) {
+    public void addSubordinate(Subordinate Subordinate) throws CloneNotSupportedException {
         Transaction transaction = this.getCurrentTransaction();
-        transaction.enlistParticipant(participant);
+        transaction.addSubordinate(Subordinate);
         transactionRepository.update(transaction);
     }
 }

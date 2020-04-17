@@ -2,7 +2,7 @@ package io.tyloo.unittest.service;
 
 import io.tyloo.api.Tyloo;
 import io.tyloo.api.Propagation;
-import io.tyloo.api.TransactionContext;
+import io.tyloo.api.TylooTransactionContext;
 import io.tyloo.unittest.client.AccountRecordServiceProxy;
 import io.tyloo.unittest.entity.AccountStatus;
 import io.tyloo.unittest.entity.SubAccount;
@@ -24,7 +24,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Tyloo(confirmMethod = "transferFromConfirm", cancelMethod = "transferFromCancel")
-    public void transferFrom(TransactionContext transactionContext, long accountId, int amount) {
+    public void transferFrom(TylooTransactionContext tylooTransactionContext, long accountId, int amount) {
         System.out.println("transferFrom called");
         SubAccount subAccount = subAccountRepository.findById(accountId);
         subAccount.setStatus(AccountStatus.TRANSFERING.getId());
@@ -34,7 +34,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Tyloo(propagation = Propagation.REQUIRED, confirmMethod = "transferToConfirm", cancelMethod = "transferToCancel")
-    public void transferTo(TransactionContext transactionContext, long accountId, int amount) {
+    public void transferTo(TylooTransactionContext tylooTransactionContext, long accountId, int amount) {
 
         System.out.println("transferTo called");
         SubAccount subAccount = subAccountRepository.findById(accountId);
@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Tyloo(confirmMethod = "transferFromConfirm", cancelMethod = "transferFromCancel")
-    public void transferFromWithMultipleTier(TransactionContext transactionContext, long accountId, int amount) {
+    public void transferFromWithMultipleTier(TylooTransactionContext tylooTransactionContext, long accountId, int amount) {
         System.out.println("transferFromWithMultipleTier called");
         SubAccount subAccount = subAccountRepository.findById(accountId);
         subAccount.setStatus(AccountStatus.TRANSFERING.getId());
@@ -54,7 +54,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Tyloo(confirmMethod = "transferToConfirm", cancelMethod = "transferToCancel")
-    public void transferToWithMultipleTier(TransactionContext transactionContext, long accountId, int amount) {
+    public void transferToWithMultipleTier(TylooTransactionContext tylooTransactionContext, long accountId, int amount) {
 
         System.out.println("transferToWithMultipleTier called");
 
@@ -78,13 +78,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
-    public void transferFromConfirm(TransactionContext transactionContext, long accountId, int amount) {
+    public void transferFromConfirm(TylooTransactionContext tylooTransactionContext, long accountId, int amount) {
         System.out.println("transferFromConfirm called");
         SubAccount subAccount = subAccountRepository.findById(accountId);
         subAccount.setStatus(AccountStatus.NORMAL.getId());
     }
 
-    public void transferFromCancel(TransactionContext transactionContext, long accountId, int amount) {
+    public void transferFromCancel(TylooTransactionContext tylooTransactionContext, long accountId, int amount) {
         System.out.println("transferFromCancel called");
         SubAccount subAccount = subAccountRepository.findById(accountId);
 
@@ -96,7 +96,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void transferToConfirm(TransactionContext transactionContext, long accountId, int amount) {
+    public void transferToConfirm(TylooTransactionContext tylooTransactionContext, long accountId, int amount) {
         System.out.println("transferToConfirm called");
 
         if (UnitTest.CONFIRMING_EXCEPTION) {
@@ -108,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void transferToCancel(TransactionContext transactionContext, long accountId, int amount) {
+    public void transferToCancel(TylooTransactionContext tylooTransactionContext, long accountId, int amount) {
         System.out.println("transferToCancel called");
 
         SubAccount subAccount = subAccountRepository.findById(accountId);

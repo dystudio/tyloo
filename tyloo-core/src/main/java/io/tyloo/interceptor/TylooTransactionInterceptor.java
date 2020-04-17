@@ -5,7 +5,7 @@ import io.tyloo.NoExistedTransactionException;
 import io.tyloo.SystemException;
 import io.tyloo.Transaction;
 import io.tyloo.TransactionManager;
-import io.tyloo.api.TransactionStatus;
+import io.tyloo.api.TylooTransactionStatus;
 import io.tyloo.utils.ReflectionUtils;
 import io.tyloo.utils.TransactionUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -54,7 +54,6 @@ public class TylooTransactionInterceptor {
     public Object interceptTylooMethod(ProceedingJoinPoint pjp) throws Throwable {
 
         TylooMethodContext tylooMethodContext = new TylooMethodContext(pjp);
-
         boolean isTransactionActive = transactionManager.isTransactionActive();
 
         if (!TransactionUtils.isLegalTransactionContext(isTransactionActive, tylooMethodContext)) {
@@ -65,7 +64,7 @@ public class TylooTransactionInterceptor {
             case ROOT:
                 return rootMethodProceed(tylooMethodContext);
             case PROVIDER:
-                return providerMethodProceed(tylooMethodContext);
+                return subMethodProceed(tylooMethodContext);
             default:
                 return pjp.proceed();
         }
@@ -80,37 +79,26 @@ public class TylooTransactionInterceptor {
     private Object rootMethodProceed(TylooMethodContext tylooMethodContext) throws Throwable {
 
         Object returnValue = null;
-
         Transaction transaction = null;
-
         boolean asyncConfirm = tylooMethodContext.getAnnotation().asyncConfirm();
-
         boolean asyncCancel = tylooMethodContext.getAnnotation().asyncCancel();
 
-        Set<Class<? extends Exception>> allDelayCancelExceptions = new HashSet<Class<? extends Exception>>();
+        Set<Class<? extends Exception>> allDelayCancelExceptions = new HashSet<>();
         allDelayCancelExceptions.addAll(this.delayCancelExceptions);
         allDelayCancelExceptions.addAll(Arrays.asList(tylooMethodContext.getAnnotation().delayCancelExceptions()));
 
         try {
-
             transaction = transactionManager.begin(tylooMethodContext.getUniqueIdentity());
-
             try {
                 returnValue = tylooMethodContext.proceed();
             } catch (Throwable tryingException) {
-
                 if (!isDelayCancelException(tryingException, allDelayCancelExceptions)) {
-
                     logger.warn(String.format("tyloo transaction trying failed. transaction content:%s", JSON.toJSONString(transaction)), tryingException);
-
                     transactionManager.rollback(asyncCancel);
                 }
-
                 throw tryingException;
             }
-
             transactionManager.commit(asyncConfirm);
-
         } finally {
             transactionManager.cleanAfterCompletion(transaction);
         }
@@ -125,40 +113,36 @@ public class TylooTransactionInterceptor {
      * @param tylooMethodContext
      * @throws Throwable
      */
-    private Object providerMethodProceed(TylooMethodContext tylooMethodContext) throws Throwable {
+    private Object subMethodProceed(TylooMethodContext tylooMethodContext) throws Throwable {
 
         Transaction transaction = null;
-
-
         boolean asyncConfirm = tylooMethodContext.getAnnotation().asyncConfirm();
-
         boolean asyncCancel = tylooMethodContext.getAnnotation().asyncCancel();
 
         try {
 
-            switch (TransactionStatus.valueOf(tylooMethodContext.getTransactionContext().getStatus())) {
+            switch (TylooTransactionStatus.valueOf(tylooMethodContext.getTylooTransactionContext().getStatus())) {
                 case TRYING:
-                    transaction = transactionManager.propagationNewBegin(tylooMethodContext.getTransactionContext());
+                    transaction = transactionManager.propagationNewBegin(tylooMethodContext.getTylooTransactionContext());
                     return tylooMethodContext.proceed();
                 case CONFIRMING:
                     try {
-                        transaction = transactionManager.propagationExistBegin(tylooMethodContext.getTransactionContext());
+                        transaction = transactionManager.propagationExistBegin(tylooMethodContext.getTylooTransactionContext());
                         transactionManager.commit(asyncConfirm);
                     } catch (NoExistedTransactionException excepton) {
                         //the transaction has been commit,ignore it.
                     }
                     break;
                 case CANCELLING:
-
                     try {
-                        transaction = transactionManager.propagationExistBegin(tylooMethodContext.getTransactionContext());
+                        transaction = transactionManager.propagationExistBegin(tylooMethodContext.getTylooTransactionContext());
                         transactionManager.rollback(asyncCancel);
                     } catch (NoExistedTransactionException exception) {
                         //the transaction has been rollback,ignore it.
                     }
                     break;
                 default:
-                    throw new IllegalStateException("Unexpected value: " + TransactionStatus.valueOf(tylooMethodContext.getTransactionContext().getStatus()));
+                    throw new IllegalStateException("Unexpected value: " + TylooTransactionStatus.valueOf(tylooMethodContext.getTylooTransactionContext().getStatus()));
             }
 
         } finally {
@@ -166,7 +150,6 @@ public class TylooTransactionInterceptor {
         }
 
         Method method = tylooMethodContext.getMethod();
-
         return ReflectionUtils.getNullValue(method.getReturnType());
     }
 
@@ -174,9 +157,7 @@ public class TylooTransactionInterceptor {
 
         if (delayCancelExceptions != null) {
             for (Class delayCancelException : delayCancelExceptions) {
-
                 Throwable rootCause = ExceptionUtils.getRootCause(throwable);
-
                 if (!throwable.getClass().isAssignableFrom(delayCancelException)) {
                     if ((rootCause != null) && rootCause.getClass().isAssignableFrom(delayCancelException)) {
                         return true;

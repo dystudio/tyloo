@@ -1,7 +1,7 @@
 package io.tyloo.unittest.thirdservice;
 
 import io.tyloo.api.Tyloo;
-import io.tyloo.api.TransactionContext;
+import io.tyloo.api.TylooTransactionContext;
 import io.tyloo.unittest.entity.AccountRecord;
 import io.tyloo.unittest.entity.AccountStatus;
 import io.tyloo.unittest.repository.AccountRecordRepository;
@@ -18,7 +18,7 @@ public class AccountRecordServiceImpl implements AccountRecordService {
 
     @Override
     @Tyloo(confirmMethod = "recordConfirm", cancelMethod = "recordCancel")
-    public void record(TransactionContext transactionContext, long accountId, int amount) {
+    public void record(TylooTransactionContext tylooTransactionContext, long accountId, int amount) {
 
         System.out.println("record");
 
@@ -32,14 +32,14 @@ public class AccountRecordServiceImpl implements AccountRecordService {
     }
 
     @Override
-    public void recordConfirm(TransactionContext transactionContext, long accountId, int amount) {
+    public void recordConfirm(TylooTransactionContext tylooTransactionContext, long accountId, int amount) {
         System.out.println("recordConfirm");
         AccountRecord accountRecord = accountRecordRepository.findById(accountId);
         accountRecord.setStatusId(AccountStatus.NORMAL.getId());
     }
 
     @Override
-    public void recordCancel(TransactionContext transactionContext, long accountId, int amount) {
+    public void recordCancel(TylooTransactionContext tylooTransactionContext, long accountId, int amount) {
         System.out.println("recordCancel");
 
         if (UnitTest.TRYING_EXCEPTION) {

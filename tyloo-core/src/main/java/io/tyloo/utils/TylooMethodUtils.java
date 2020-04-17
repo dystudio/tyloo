@@ -3,7 +3,7 @@ package io.tyloo.utils;
 
 import io.tyloo.api.Tyloo;
 import io.tyloo.api.Propagation;
-import io.tyloo.api.TransactionContext;
+import io.tyloo.api.TylooTransactionContext;
 import io.tyloo.common.MethodRole;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -31,12 +31,12 @@ public class TylooMethodUtils {
         return method;
     }
 
-    public static MethodRole calculateMethodType(Propagation propagation, boolean isTransactionActive, TransactionContext transactionContext) {
+    public static MethodRole calculateMethodType(Propagation propagation, boolean isTransactionActive, TylooTransactionContext tylooTransactionContext) {
 
-        if ((propagation.equals(Propagation.REQUIRED) && !isTransactionActive && transactionContext == null) ||
+        if ((propagation.equals(Propagation.REQUIRED) && !isTransactionActive && tylooTransactionContext == null) ||
                 propagation.equals(Propagation.REQUIRES_NEW)) {
             return MethodRole.ROOT;
-        } else if ((propagation.equals(Propagation.REQUIRED) || propagation.equals(Propagation.MANDATORY)) && !isTransactionActive && transactionContext != null) {
+        } else if ((propagation.equals(Propagation.REQUIRED) || propagation.equals(Propagation.MANDATORY)) && !isTransactionActive && tylooTransactionContext != null) {
             return MethodRole.PROVIDER;
         } else {
             return MethodRole.NORMAL;
@@ -48,7 +48,7 @@ public class TylooMethodUtils {
         int position = -1;
 
         for (int i = 0; i < parameterTypes.length; i++) {
-            if (parameterTypes[i].equals(io.tyloo.api.TransactionContext.class)) {
+            if (parameterTypes[i].equals(TylooTransactionContext.class)) {
                 position = i;
                 break;
             }

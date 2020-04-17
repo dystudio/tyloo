@@ -1,7 +1,7 @@
 package io.tyloo.context;
 
-import io.tyloo.api.TransactionContext;
-import io.tyloo.api.TransactionContextEditor;
+import io.tyloo.api.TylooTransactionContext;
+import io.tyloo.api.TylooTransactionContextEditor;
 import io.tyloo.utils.TylooMethodUtils;
 
 import java.lang.reflect.Method;
@@ -14,25 +14,25 @@ import java.lang.reflect.Method;
  */
 
 @Deprecated
-public class MethodTransactionContextEditor implements TransactionContextEditor {
+public class MethodTylooTransactionContextEditor implements TylooTransactionContextEditor {
 
     @Override
-    public TransactionContext get(Object target, Method method, Object[] args) {
+    public TylooTransactionContext get(Object target, Method method, Object[] args) {
         int position = TylooMethodUtils.getTransactionContextParamPosition(method.getParameterTypes());
 
         if (position >= 0) {
-            return (TransactionContext) args[position];
+            return (TylooTransactionContext) args[position];
         }
         
         return null;
     }
 
     @Override
-    public void set(TransactionContext transactionContext, Object target, Method method, Object[] args) {
+    public void set(TylooTransactionContext tylooTransactionContext, Object target, Method method, Object[] args) {
 
         int position = TylooMethodUtils.getTransactionContextParamPosition(method.getParameterTypes());
         if (position >= 0) {
-            args[position] = transactionContext;
+            args[position] = tylooTransactionContext;
         }
     }
 }

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import io.tyloo.OptimisticLockException;
 import io.tyloo.Transaction;
 import io.tyloo.TransactionRepository;
-import io.tyloo.api.TransactionStatus;
+import io.tyloo.api.TylooTransactionStatus;
 import io.tyloo.common.TransactionType;
 import io.tyloo.support.TransactionConfigurator;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -88,18 +88,18 @@ public class TylooTransactionRecovery {
                 transaction.addRetriedCount();
 
                 // 如果是CONFIRMING(2)状态，则将事务往前执行
-                if (transaction.getStatus().equals(TransactionStatus.CONFIRMING)) {
+                if (transaction.getStatus().equals(TylooTransactionStatus.CONFIRMING)) {
 
-                    transaction.changeStatus(TransactionStatus.CONFIRMING);
+                    transaction.changeStatus(TylooTransactionStatus.CONFIRMING);
                     transactionConfigurator.getTransactionRepository().update(transaction);
                     transaction.commit();
                     transactionConfigurator.getTransactionRepository().delete(transaction);
 
-                } else if (transaction.getStatus().equals(TransactionStatus.CANCELLING)
+                } else if (transaction.getStatus().equals(TylooTransactionStatus.CANCELLING)
                         || transaction.getTransactionType().equals(TransactionType.ROOT)) {
 
                     // 其他情况，把事务状态改为CANCELLING(3)，然后执行回滚
-                    transaction.changeStatus(TransactionStatus.CANCELLING);
+                    transaction.changeStatus(TylooTransactionStatus.CANCELLING);
                     transactionConfigurator.getTransactionRepository().update(transaction);
                     transaction.rollback();
                     // 其他情况下，超时没处理的事务日志直接删除

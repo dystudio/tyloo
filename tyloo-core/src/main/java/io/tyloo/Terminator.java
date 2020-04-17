@@ -1,7 +1,7 @@
 package io.tyloo;
 
-import io.tyloo.api.TransactionContext;
-import io.tyloo.api.TransactionContextEditor;
+import io.tyloo.api.TylooTransactionContext;
+import io.tyloo.api.TylooTransactionContextEditor;
 import io.tyloo.support.FactoryBuilder;
 import io.tyloo.utils.StringUtils;
 
@@ -27,7 +27,7 @@ public final class Terminator {
      *
      * @param invocationContext
      */
-    public static void invoke(TransactionContext transactionContext, InvocationContext invocationContext, Class<? extends TransactionContextEditor> transactionContextEditorClass) {
+    public static void invoke(TylooTransactionContext tylooTransactionContext, InvocationContext invocationContext, Class<? extends TylooTransactionContextEditor> transactionContextEditorClass) {
 
 
         if (StringUtils.isNotEmpty(invocationContext.getMethodName())) {
@@ -41,7 +41,7 @@ public final class Terminator {
                 //注入事务上下文
                 method = target.getClass().getMethod(invocationContext.getMethodName(), invocationContext.getParameterTypes());
 
-                FactoryBuilder.factoryOf(transactionContextEditorClass).getInstance().set(transactionContext, target, method, invocationContext.getArgs());
+                FactoryBuilder.factoryOf(transactionContextEditorClass).getInstance().set(tylooTransactionContext, target, method, invocationContext.getArgs());
 
                 // 调用服务方法，被再次被TylooAspect和TylooCoordinatorAspect拦截，但因为事务状态已经不再是TRYING了，所以直接执行远程服务
                 method.invoke(target, invocationContext.getArgs());

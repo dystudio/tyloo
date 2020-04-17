@@ -7,7 +7,7 @@ import io.tyloo.ConcurrentTransactionException;
 import io.tyloo.OptimisticLockException;
 import io.tyloo.Transaction;
 import io.tyloo.TransactionRepository;
-import io.tyloo.api.TransactionXid;
+import io.tyloo.api.TylooTransactionXid;
 
 import javax.transaction.xa.Xid;
 import java.util.Date;
@@ -37,7 +37,7 @@ public abstract class CachableTransactionRepository implements TransactionReposi
      * 创建事务日志记录
      */
     @Override
-    public int create(Transaction transaction) {
+    public int create(Transaction transaction) throws CloneNotSupportedException {
         int result = doCreate(transaction);
         if (result > 0) {
             putToCache(transaction);
@@ -52,7 +52,7 @@ public abstract class CachableTransactionRepository implements TransactionReposi
      * 更新事务日志记录
      */
     @Override
-    public int update(Transaction transaction) {
+    public int update(Transaction transaction) throws CloneNotSupportedException {
         int result = 0;
 
         try {
@@ -75,12 +75,14 @@ public abstract class CachableTransactionRepository implements TransactionReposi
      * 删除事务日志记录
      */
     @Override
-    public int delete(Transaction transaction) {
+    public int delete(Transaction transaction) throws CloneNotSupportedException {
         int result = 0;
 
         try {
             result = doDelete(transaction);
 
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         } finally {
             removeFromCache(transaction);
         }
@@ -90,15 +92,15 @@ public abstract class CachableTransactionRepository implements TransactionReposi
     /**
      * 根据xid查找事务日志记录.
      *
-     * @param transactionXid
+     * @param tylooTransactionXid
      * @return
      */
     @Override
-    public Transaction findByXid(TransactionXid transactionXid) {
-        Transaction transaction = findFromCache(transactionXid);
+    public Transaction findByXid(TylooTransactionXid tylooTransactionXid) throws CloneNotSupportedException {
+        Transaction transaction = findFromCache(tylooTransactionXid);
 
         if (transaction == null) {
-            transaction = doFindOne(transactionXid);
+            transaction = doFindOne(tylooTransactionXid);
 
             if (transaction != null) {
                 putToCache(transaction);
@@ -114,7 +116,7 @@ public abstract class CachableTransactionRepository implements TransactionReposi
      * @return
      */
     @Override
-    public List<Transaction> findAllUnmodifiedSince(Date date) {
+    public List<Transaction> findAllUnmodifiedSince(Date date) throws CloneNotSupportedException {
 
         List<Transaction> transactions = doFindAllUnmodifiedSince(date);
 
@@ -134,7 +136,7 @@ public abstract class CachableTransactionRepository implements TransactionReposi
      *
      * @param transaction
      */
-    protected void putToCache(Transaction transaction) {
+    protected void putToCache(Transaction transaction) throws CloneNotSupportedException {
         transactionXidTylooTransactionCache.put(transaction.getXid(), transaction);
     }
 
@@ -143,18 +145,18 @@ public abstract class CachableTransactionRepository implements TransactionReposi
      *
      * @param transaction
      */
-    protected void removeFromCache(Transaction transaction) {
+    protected void removeFromCache(Transaction transaction) throws CloneNotSupportedException {
         transactionXidTylooTransactionCache.invalidate(transaction.getXid());
     }
 
     /**
      * 从缓存中查找.
      *
-     * @param transactionXid
+     * @param tylooTransactionXid
      * @return
      */
-    protected Transaction findFromCache(TransactionXid transactionXid) {
-        return transactionXidTylooTransactionCache.getIfPresent(transactionXid);
+    protected Transaction findFromCache(TylooTransactionXid tylooTransactionXid) {
+        return transactionXidTylooTransactionCache.getIfPresent(tylooTransactionXid);
     }
 
     public void setExpireDuration(int durationInSeconds) {
@@ -167,11 +169,11 @@ public abstract class CachableTransactionRepository implements TransactionReposi
      * @param transaction
      * @return
      */
-    protected abstract int doCreate(Transaction transaction);
+    protected abstract int doCreate(Transaction transaction) throws CloneNotSupportedException;
 
-    protected abstract int doUpdate(Transaction transaction);
+    protected abstract int doUpdate(Transaction transaction) throws CloneNotSupportedException;
 
-    protected abstract int doDelete(Transaction transaction);
+    protected abstract int doDelete(Transaction transaction) throws CloneNotSupportedException;
 
     protected abstract Transaction doFindOne(Xid xid);
 

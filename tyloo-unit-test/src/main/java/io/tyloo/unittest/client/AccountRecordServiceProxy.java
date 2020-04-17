@@ -1,13 +1,12 @@
 package io.tyloo.unittest.client;
 
-import io.tyloo.api.TransactionContext;
+import io.tyloo.api.TylooTransactionContext;
 import io.tyloo.unittest.thirdservice.AccountRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import static java.util.concurrent.Executors.*;
@@ -22,7 +21,7 @@ public class AccountRecordServiceProxy {
 
     private ExecutorService executorService = newFixedThreadPool(100);
 
-    public void record(final TransactionContext transactionContext, final long accountId, final int amount) {
+    public void record(final TylooTransactionContext tylooTransactionContext, final long accountId, final int amount) {
 //        Future<Boolean> future = this.executorService
 //                .submit(new Callable<Boolean>() {
 //                    @Override
@@ -34,7 +33,7 @@ public class AccountRecordServiceProxy {
 //
 //        handleResult(future);
 
-        accountRecordService.record(transactionContext, accountId, amount);
+        accountRecordService.record(tylooTransactionContext, accountId, amount);
 
     }
 

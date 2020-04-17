@@ -8,8 +8,8 @@ import io.tyloo.sample.http.capital.api.CapitalTradeOrderService;
 import io.tyloo.sample.http.capital.api.dto.CapitalTradeOrderDto;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import io.tyloo.api.Tyloo;
-import io.tyloo.api.TransactionContext;
-import io.tyloo.context.MethodTransactionContextEditor;
+import io.tyloo.api.TylooTransactionContext;
+import io.tyloo.context.MethodTylooTransactionContextEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +26,9 @@ public class CapitalTradeOrderServiceImpl implements CapitalTradeOrderService {
     TradeOrderRepository tradeOrderRepository;
 
     @Override
-    @Tyloo(confirmMethod = "confirmRecord", cancelMethod = "cancelRecord", transactionContextEditor = MethodTransactionContextEditor.class)
+    @Tyloo(confirmMethod = "confirmRecord", cancelMethod = "cancelRecord", transactionContextEditor = MethodTylooTransactionContextEditor.class)
     @Transactional
-    public String record(TransactionContext transactionContext, CapitalTradeOrderDto tradeOrderDto) {
+    public String record(TylooTransactionContext tylooTransactionContext, CapitalTradeOrderDto tradeOrderDto) {
 
         try {
             Thread.sleep(1000l);
@@ -67,7 +67,7 @@ public class CapitalTradeOrderServiceImpl implements CapitalTradeOrderService {
     }
 
     @Transactional
-    public void confirmRecord(TransactionContext transactionContext, CapitalTradeOrderDto tradeOrderDto) {
+    public void confirmRecord(TylooTransactionContext tylooTransactionContext, CapitalTradeOrderDto tradeOrderDto) {
 
         try {
             Thread.sleep(1000l);
@@ -93,7 +93,7 @@ public class CapitalTradeOrderServiceImpl implements CapitalTradeOrderService {
     }
 
     @Transactional
-    public void cancelRecord(TransactionContext transactionContext, CapitalTradeOrderDto tradeOrderDto) {
+    public void cancelRecord(TylooTransactionContext tylooTransactionContext, CapitalTradeOrderDto tradeOrderDto) {
 
         try {
             Thread.sleep(1000l);
