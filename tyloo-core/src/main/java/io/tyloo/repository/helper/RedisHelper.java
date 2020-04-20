@@ -44,7 +44,7 @@ public class RedisHelper {
      * @param <T>
      * @return
      */
-    public static <T> T execute(JedisPool jedisPool, JedisCallback<T> callback) {
+    public static <T> T execute(JedisPool jedisPool, JedisCallback<T> callback) throws CloneNotSupportedException {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();

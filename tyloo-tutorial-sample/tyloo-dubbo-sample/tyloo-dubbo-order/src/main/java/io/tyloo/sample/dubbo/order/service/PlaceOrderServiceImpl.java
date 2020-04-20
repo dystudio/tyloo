@@ -5,8 +5,8 @@ import io.tyloo.sample.order.domain.entity.Shop;
 import io.tyloo.sample.order.domain.repository.ShopRepository;
 import io.tyloo.sample.order.domain.service.OrderServiceImpl;
 import org.apache.commons.lang3.tuple.Pair;
-import io.tyloo.CancellingException;
-import io.tyloo.ConfirmingException;
+import io.tyloo.exception.CancellingException;
+import io.tyloo.exception.ConfirmingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

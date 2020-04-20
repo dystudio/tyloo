@@ -3,10 +3,9 @@ package io.tyloo.repository;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import io.tyloo.ConcurrentTransactionException;
-import io.tyloo.OptimisticLockException;
-import io.tyloo.Transaction;
-import io.tyloo.TransactionRepository;
+import io.tyloo.exception.ConcurrentTransactionException;
+import io.tyloo.exception.OptimisticLockException;
+import io.tyloo.common.Transaction;
 import io.tyloo.api.TylooTransactionXid;
 
 import javax.transaction.xa.Xid;

@@ -1,5 +1,6 @@
-package io.tyloo;
+package io.tyloo.repository;
 
+import io.tyloo.common.Transaction;
 import io.tyloo.api.TylooTransactionXid;
 
 import java.util.Date;

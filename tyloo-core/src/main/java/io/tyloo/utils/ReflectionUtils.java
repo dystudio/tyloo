@@ -26,24 +26,16 @@ public class ReflectionUtils {
         Object handler = Proxy.getInvocationHandler(annotation);
 
         Field f;
-
         f = handler.getClass().getDeclaredField("memberValues");
-
         f.setAccessible(true);
-
         Map<String, Object> memberValues;
-
         memberValues = (Map<String, Object>) f.get(handler);
-
         Object oldValue = memberValues.get(key);
-
         if (oldValue == null || oldValue.getClass() != newValue.getClass()) {
-
             throw new IllegalArgumentException();
         }
 
         memberValues.put(key, newValue);
-
         return oldValue;
     }
 
@@ -56,22 +48,18 @@ public class ReflectionUtils {
 
         do {
             Class[] clazzes = findClass.getInterfaces();
-
             for (Class clazz : clazzes) {
-
                 try {
                     method = clazz.getDeclaredMethod(methodName, parameterTypes);
                 } catch (NoSuchMethodException e) {
                     method = null;
                 }
-
                 if (method != null) {
                     return clazz;
                 }
             }
 
             findClass = findClass.getSuperclass();
-
         } while (!findClass.equals(Object.class));
 
         return aClass;

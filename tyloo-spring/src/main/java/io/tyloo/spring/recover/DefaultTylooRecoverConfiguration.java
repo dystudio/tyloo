@@ -1,6 +1,6 @@
 package io.tyloo.spring.recover;
 
-import io.tyloo.OptimisticLockException;
+import io.tyloo.exception.OptimisticLockException;
 import io.tyloo.recover.TylooRecoverConfiguration;
 
 import java.net.SocketTimeoutException;

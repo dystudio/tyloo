@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  */
 
 @Deprecated
-public class MethodTylooTransactionContextEditor implements TylooTransactionContextEditor {
+public class MethodTransactionContextEditor implements TylooTransactionContextEditor {
 
     @Override
     public TylooTransactionContext get(Object target, Method method, Object[] args) {
@@ -27,12 +27,13 @@ public class MethodTylooTransactionContextEditor implements TylooTransactionCont
         return null;
     }
 
+
     @Override
-    public void set(TylooTransactionContext tylooTransactionContext, Object target, Method method, Object[] args) {
+    public void set(TylooTransactionContext transactionContext, Object target, Method method, Object[] args) {
 
         int position = TylooMethodUtils.getTransactionContextParamPosition(method.getParameterTypes());
         if (position >= 0) {
-            args[position] = tylooTransactionContext;
+            args[position] = transactionContext;
         }
     }
 }

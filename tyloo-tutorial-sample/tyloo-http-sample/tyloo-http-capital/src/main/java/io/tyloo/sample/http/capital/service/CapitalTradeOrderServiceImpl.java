@@ -1,5 +1,6 @@
 package io.tyloo.sample.http.capital.service;
 
+import io.tyloo.context.MethodTransactionContextEditor;
 import io.tyloo.sample.capital.domain.entity.CapitalAccount;
 import io.tyloo.sample.capital.domain.entity.TradeOrder;
 import io.tyloo.sample.capital.domain.repository.CapitalAccountRepository;
@@ -9,7 +10,6 @@ import io.tyloo.sample.http.capital.api.dto.CapitalTradeOrderDto;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import io.tyloo.api.Tyloo;
 import io.tyloo.api.TylooTransactionContext;
-import io.tyloo.context.MethodTylooTransactionContextEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ public class CapitalTradeOrderServiceImpl implements CapitalTradeOrderService {
     TradeOrderRepository tradeOrderRepository;
 
     @Override
-    @Tyloo(confirmMethod = "confirmRecord", cancelMethod = "cancelRecord", transactionContextEditor = MethodTylooTransactionContextEditor.class)
+    @Tyloo(confirmMethod = "confirmRecord", cancelMethod = "cancelRecord", transactionContextEditor = MethodTransactionContextEditor.class)
     @Transactional
     public String record(TylooTransactionContext tylooTransactionContext, CapitalTradeOrderDto tradeOrderDto) {
 

@@ -1,6 +1,6 @@
 package io.tyloo.unit.test;
 
-import io.tyloo.SystemException;
+import io.tyloo.exception.SystemException;
 import io.tyloo.recover.TylooTransactionRecovery;
 import io.tyloo.unittest.client.TransferService;
 import io.tyloo.unittest.entity.AccountRecord;

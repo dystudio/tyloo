@@ -1,8 +1,8 @@
 package io.tyloo.repository.helper;
 
 import com.alibaba.fastjson.JSON;
-import io.tyloo.SystemException;
-import io.tyloo.Transaction;
+import io.tyloo.exception.SystemException;
+import io.tyloo.common.Transaction;
 import io.tyloo.api.TylooTransactionStatus;
 import io.tyloo.serializer.ObjectSerializer;
 import io.tyloo.utils.ByteUtils;
@@ -24,9 +24,9 @@ import java.util.Map;
 
 public class ExpandTransactionSerializer {
 
-    public static Map<byte[], byte[]> serialize(ObjectSerializer serializer, Transaction transaction) {
+    public static Map<byte[], byte[]> serialize(ObjectSerializer serializer, Transaction transaction) throws CloneNotSupportedException {
 
-        Map<byte[], byte[]> map = new HashMap<byte[], byte[]>();
+        Map<byte[], byte[]> map = new HashMap<>();
 
         map.put("GLOBAL_TX_ID".getBytes(), transaction.getXid().getGlobalTransactionId());
         map.put("BRANCH_QUALIFIER".getBytes(), transaction.getXid().getBranchQualifier());

@@ -1,4 +1,4 @@
-package io.tyloo;
+package io.tyloo.exception;
 
 /*
  *

@@ -1,6 +1,6 @@
 package io.tyloo.repository.helper;
 
-import io.tyloo.Transaction;
+import io.tyloo.common.Transaction;
 import io.tyloo.serializer.ObjectSerializer;
 
 import java.util.Date;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class TransactionSerializer {
 
-    public static byte[] serialize(ObjectSerializer serializer, Transaction transaction) {
+    public static byte[] serialize(ObjectSerializer serializer, Transaction transaction) throws CloneNotSupportedException {
         Map<String, Object> map = new HashMap<String, Object>();
 
         map.put("GLOBAL_TX_ID", transaction.getXid().getGlobalTransactionId());

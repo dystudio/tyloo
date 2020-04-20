@@ -1,6 +1,6 @@
 
 
-package io.tyloo.common;
+package io.tyloo.enums;
 
 /*
  * 事务类型

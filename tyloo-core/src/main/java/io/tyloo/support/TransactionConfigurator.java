@@ -1,7 +1,7 @@
 package io.tyloo.support;
 
-import io.tyloo.TransactionManager;
-import io.tyloo.TransactionRepository;
+import io.tyloo.common.TransactionManager;
+import io.tyloo.repository.TransactionRepository;
 import io.tyloo.recover.TylooRecoverConfiguration;
 
 /*

@@ -4,7 +4,7 @@ import io.tyloo.api.Tyloo;
 import io.tyloo.api.Propagation;
 import io.tyloo.api.TylooTransactionContext;
 import io.tyloo.api.UniqueIdentity;
-import io.tyloo.common.MethodRole;
+import io.tyloo.enums.MethodRole;
 import io.tyloo.support.FactoryBuilder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -83,9 +83,7 @@ public class TylooMethodContext {
         for (int i = 0; i < annotations.length; i++) {
             for (Annotation annotation : annotations[i]) {
                 if (annotation.annotationType().equals(UniqueIdentity.class)) {
-
                     Object[] params = pjp.getArgs();
-
                     return params[i];
                 }
             }

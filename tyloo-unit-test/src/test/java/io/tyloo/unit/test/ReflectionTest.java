@@ -1,6 +1,6 @@
 package io.tyloo.unit.test;
 
-import io.tyloo.Transaction;
+import io.tyloo.common.Transaction;
 import io.tyloo.serializer.JacksonJsonSerializer;
 import io.tyloo.unittest.client.TransferService;
 import io.tyloo.unittest.entity.SubAccount;

@@ -1,5 +1,6 @@
 package io.tyloo.sample.http.redpacket.service;
 
+import io.tyloo.context.MethodTransactionContextEditor;
 import io.tyloo.sample.http.redpacket.api.RedPacketTradeOrderService;
 import io.tyloo.sample.http.redpacket.api.dto.RedPacketTradeOrderDto;
 import io.tyloo.sample.redpacket.domain.entity.RedPacketAccount;
@@ -9,7 +10,6 @@ import io.tyloo.sample.redpacket.domain.repository.TradeOrderRepository;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import io.tyloo.api.Tyloo;
 import io.tyloo.api.TylooTransactionContext;
-import io.tyloo.context.MethodTylooTransactionContextEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ public class RedPacketTradeOrderServiceImpl implements RedPacketTradeOrderServic
     TradeOrderRepository tradeOrderRepository;
 
     @Override
-    @Tyloo(confirmMethod = "confirmRecord", cancelMethod = "cancelRecord", transactionContextEditor = MethodTylooTransactionContextEditor.class)
+    @Tyloo(confirmMethod = "confirmRecord", cancelMethod = "cancelRecord", transactionContextEditor = MethodTransactionContextEditor.class)
     @Transactional
     public String record(TylooTransactionContext tylooTransactionContext, RedPacketTradeOrderDto tradeOrderDto) {
 

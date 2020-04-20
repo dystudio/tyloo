@@ -1,9 +1,9 @@
 package io.tyloo.interceptor;
 
-import io.tyloo.InvocationContext;
-import io.tyloo.Subordinate;
-import io.tyloo.Transaction;
-import io.tyloo.TransactionManager;
+import io.tyloo.context.MethodContext;
+import io.tyloo.common.Subordinate;
+import io.tyloo.common.Transaction;
+import io.tyloo.common.TransactionManager;
 import io.tyloo.api.Tyloo;
 import io.tyloo.api.TylooTransactionContext;
 import io.tyloo.api.TylooTransactionStatus;
@@ -83,11 +83,11 @@ public class TylooCoordinatorInterceptor {
 
         Class targetClass = ReflectionUtils.getDeclaringType(pjp.getTarget().getClass(), method.getName(), method.getParameterTypes());
 
-        InvocationContext confirmInvocation = new InvocationContext(targetClass,
+        MethodContext confirmInvocation = new MethodContext(targetClass,
                 confirmMethodName,
                 method.getParameterTypes(), pjp.getArgs());
 
-        InvocationContext cancelInvocation = new InvocationContext(targetClass,
+        MethodContext cancelInvocation = new MethodContext(targetClass,
                 cancelMethodName,
                 method.getParameterTypes(), pjp.getArgs());
 

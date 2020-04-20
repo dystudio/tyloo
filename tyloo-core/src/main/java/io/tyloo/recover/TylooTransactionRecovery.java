@@ -1,11 +1,11 @@
 package io.tyloo.recover;
 
 import com.alibaba.fastjson.JSON;
-import io.tyloo.OptimisticLockException;
-import io.tyloo.Transaction;
-import io.tyloo.TransactionRepository;
+import io.tyloo.exception.OptimisticLockException;
+import io.tyloo.common.Transaction;
+import io.tyloo.repository.TransactionRepository;
 import io.tyloo.api.TylooTransactionStatus;
-import io.tyloo.common.TransactionType;
+import io.tyloo.enums.TransactionType;
 import io.tyloo.support.TransactionConfigurator;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -47,7 +47,7 @@ public class TylooTransactionRecovery {
      *
      * @return
      */
-    private List<Transaction> loadErrorTransactions() {
+    private List<Transaction> loadErrorTransactions() throws CloneNotSupportedException {
 
 
         long currentTimeInMillis = Calendar.getInstance().getTimeInMillis();

@@ -4,7 +4,7 @@ package io.tyloo.utils;
 import io.tyloo.api.Tyloo;
 import io.tyloo.api.Propagation;
 import io.tyloo.api.TylooTransactionContext;
-import io.tyloo.common.MethodRole;
+import io.tyloo.enums.MethodRole;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 

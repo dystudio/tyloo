@@ -1,6 +1,6 @@
 package io.tyloo.dubbo.proxy.jdk;
 
-import io.tyloo.SystemException;
+import io.tyloo.exception.SystemException;
 import io.tyloo.utils.ReflectionUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;

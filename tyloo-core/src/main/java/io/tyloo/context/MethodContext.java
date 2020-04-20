@@ -1,4 +1,4 @@
-package io.tyloo;
+package io.tyloo.context;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @Date: 15:48 2019/6/3
  *
  */
-public class InvocationContext implements Serializable {
+public class MethodContext implements Serializable {
 
     private static final long serialVersionUID = -7969140711432461165L;
 
@@ -36,11 +36,11 @@ public class InvocationContext implements Serializable {
      */
     private Object[] args;
 
-    public InvocationContext() {
+    public MethodContext() {
 
     }
 
-    public InvocationContext(Class targetClass, String methodName, Class[] parameterTypes, Object... args) {
+    public MethodContext(Class targetClass, String methodName, Class[] parameterTypes, Object... args) {
         this.methodName = methodName;
         this.parameterTypes = parameterTypes;
         this.targetClass = targetClass;

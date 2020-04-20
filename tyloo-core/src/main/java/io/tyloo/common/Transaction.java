@@ -1,10 +1,10 @@
-package io.tyloo;
+package io.tyloo.common;
 
 
 import io.tyloo.api.TylooTransactionContext;
 import io.tyloo.api.TylooTransactionStatus;
 import io.tyloo.api.TylooTransactionXid;
-import io.tyloo.common.TransactionType;
+import io.tyloo.enums.TransactionType;
 
 import javax.transaction.xa.Xid;
 import java.io.Serializable;
@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /*
+ *
+ *  ¬ŒÒ¿‡
  *
  * @Author:Zh1Cheung zh1cheunglq@gmail.com
  * @Date: 18:04 2019/4/30
@@ -95,14 +97,14 @@ public class Transaction implements Serializable {
 
     public void commit() {
 
-        for (Subordinate Subordinate : Subordinates) {
-            Subordinate.commit();
+        for (Subordinate subordinate : Subordinates) {
+            subordinate.commit();
         }
     }
 
     public void rollback() {
-        for (Subordinate Subordinate : Subordinates) {
-            Subordinate.rollback();
+        for (Subordinate subordinate : Subordinates) {
+            subordinate.rollback();
         }
     }
 

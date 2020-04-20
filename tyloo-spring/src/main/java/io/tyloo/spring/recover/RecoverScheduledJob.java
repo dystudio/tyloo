@@ -1,6 +1,6 @@
 package io.tyloo.spring.recover;
 
-import io.tyloo.SystemException;
+import io.tyloo.exception.SystemException;
 import io.tyloo.recover.TylooTransactionRecovery;
 import io.tyloo.support.TransactionConfigurator;
 import org.quartz.Scheduler;

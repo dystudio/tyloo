@@ -1,7 +1,7 @@
 package io.tyloo.spring.support;
 
-import io.tyloo.TransactionManager;
-import io.tyloo.TransactionRepository;
+import io.tyloo.common.TransactionManager;
+import io.tyloo.repository.TransactionRepository;
 import io.tyloo.recover.TylooRecoverConfiguration;
 import io.tyloo.repository.CachableTransactionRepository;
 import io.tyloo.spring.recover.DefaultTylooRecoverConfiguration;

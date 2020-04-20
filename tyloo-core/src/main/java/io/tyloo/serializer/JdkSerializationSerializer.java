@@ -1,6 +1,6 @@
 package io.tyloo.serializer;
 
-import io.tyloo.Transaction;
+import io.tyloo.common.Transaction;
 import org.apache.commons.lang3.SerializationUtils;
 
 /*

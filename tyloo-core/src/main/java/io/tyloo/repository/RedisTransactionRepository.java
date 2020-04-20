@@ -1,6 +1,6 @@
 package io.tyloo.repository;
 
-import io.tyloo.Transaction;
+import io.tyloo.common.Transaction;
 import io.tyloo.repository.helper.ExpandTransactionSerializer;
 import io.tyloo.repository.helper.JedisCallback;
 import io.tyloo.repository.helper.RedisHelper;

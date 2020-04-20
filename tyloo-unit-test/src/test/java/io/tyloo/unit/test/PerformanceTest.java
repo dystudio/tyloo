@@ -1,8 +1,8 @@
 package io.tyloo.unit.test;
 
-import io.tyloo.Subordinate;
-import io.tyloo.Transaction;
-import io.tyloo.common.TransactionType;
+import io.tyloo.common.Subordinate;
+import io.tyloo.common.Transaction;
+import io.tyloo.enums.TransactionType;
 import io.tyloo.serializer.KryoPoolSerializer;
 import io.tyloo.serializer.ObjectSerializer;
 import io.tyloo.unittest.client.TransferService;

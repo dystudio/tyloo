@@ -1,7 +1,7 @@
 package io.tyloo.repository;
 
 
-import io.tyloo.Transaction;
+import io.tyloo.common.Transaction;
 import io.tyloo.api.TylooTransactionStatus;
 import io.tyloo.serializer.KryoPoolSerializer;
 import io.tyloo.serializer.ObjectSerializer;

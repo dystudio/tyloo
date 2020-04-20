@@ -1,6 +1,6 @@
 package io.tyloo.spring;
 
-import io.tyloo.TransactionManager;
+import io.tyloo.common.TransactionManager;
 import io.tyloo.interceptor.TylooTransactionAspect;
 import io.tyloo.interceptor.TylooTransactionInterceptor;
 import io.tyloo.support.TransactionConfigurator;

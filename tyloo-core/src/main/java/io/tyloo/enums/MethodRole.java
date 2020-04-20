@@ -1,4 +1,4 @@
-package io.tyloo.common;
+package io.tyloo.enums;
 
 /*
  * ·½·¨½ÇÉ«
